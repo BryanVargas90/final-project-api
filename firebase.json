@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "runtime": "nodejs16",
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "app"
+      }
+    ],
+    "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"]
+  },
+  "emulators": {
+    "hosting": "localhost",
+    "port": "5055"
+  }
+}
