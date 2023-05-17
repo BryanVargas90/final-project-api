@@ -1,37 +1,43 @@
 import functions from "firebase-functions";
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
-import { mongoURI } from "./secrets.js";
-import { sessionRoute } from "./src/routes/myRoutes.js";
+import {
+  createAppointment,
+  deleteAppoinment,
+  getAllAppoinments,
+  getAppointment,
+  updateAppoinment,
+} from "./src/mySessions.js";
 
 const api = express(); // create our express app
 api.use(cors());
 api.use(express.json());
+
+api.post("/session", createAppointment);
+api.get("/session/:sessionId", getAppointment);
+api.get("/sessions", getAllAppoinments);
+api.patch("/session/:sessionId", updateAppoinment);
+api.delete("/session/:sessionId", deleteAppoinment);
 
 api.get("/", (req, res) => {
   res.json({
     message: "hello",
   });
 });
-api.use(sessionRoute);
 
-//This is my mongoose connection
-// const mongoURI = process.env.mongoURI;
-
-mongoose.connect(mongoURI, {
-  // userNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: "games",
-});
-mongoose.connection.on("connected", () => {
-  console.log("Mongo Database connected 🤓");
+api.post("/addsession", (req, res) => {
+  res.json({
+    message: "hello",
+  });
 });
 
-api.use(sessionRoute);
-const port = 3009;
-// app.listen(port, () => {
-//   console.log(`Server is running on port: http://localhost:${port}/api/`);
-// });
+api.get("/sessionTest", (req, res) => {
+  res.send({ message: "ouasdhaiuskdhsauds" });
+});
+
+const port = 5005;
+api.listen(port, () => {
+  console.log(`Server is running on port: http://localhost:${port}/api/`);
+});
 
 export const app = functions.https.onRequest(api);
